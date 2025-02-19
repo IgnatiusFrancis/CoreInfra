@@ -1,4 +1,4 @@
-# Order Management System
+<!-- # Order Management System
 
 A real-time order management system built with NestJS, featuring WebSocket-based chat functionality, role-based access control, and comprehensive test coverage.
 
@@ -221,4 +221,4 @@ For any inquiries, please reach out to:
 
 ```
 
-```
+``` -->

@@ -7,76 +7,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMIN
-  USER
+enum RequestStatus {
+  DISPATCH
+  READY
+  IN_PROGRESS
+  ACKNOWLEDGED
+  PENDING
 }
 
-enum OrderStatus {
-  REVIEW
-  PROCESSING
-  COMPLETED
+enum CardScheme {
+  VERVE
+  MASTERCARD
+  VISA
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orders   Order[]   @relation("UserOrders")
-  messages Message[] @relation("UserMessages")
-
-  @@map("users")
+enum Currency {
+  NGN
+  USD
 }
 
-model Order {
-  id             String      @id @default(uuid())
-  description    String
-  specifications Json
-  quantity       Int
-  status         OrderStatus @default(REVIEW)
-  metadata       Json?       @default("{}")
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-
-  userId   String
-  user     User      @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
-  chatRoom ChatRoom?
-
-  @@index([userId, status])
-  @@map("orders")
+enum FeeFrequency {
+  ONE_OFF
+  MONTHLY
 }
 
-model ChatRoom {
-  id        String   @id @default(uuid())
-  isClosed  Boolean  @default(false)
-  summary   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orderId  String    @unique
-  order    Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  messages Message[] @relation("ChatRoomMessages")
-
-  @@index([isClosed])
-  @@map("chat_rooms")
+enum FeeImpact {
+  ISSUANCE
+  PIN_REISSUE
 }
 
-model Message {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
+enum AccountPad {
+  NONE
+  BRANCH_CODE_PREFIX
+  BRANCH_CODE_SUFFIX
+}
 
-  sender   User   @relation("UserMessages", fields: [senderId], references: [id], onDelete: Cascade)
-  senderId String
+model CardRequest {
+  id            String        @id @default(uuid())
+  branchName    String        @db.VarChar(255)
+  cardType      String        @db.VarChar(255)
+  quantity      Int
+  dateRequested DateTime      @default(now())
+  initiator     String        @db.VarChar(255)
+  cardCharges   Float
+  batch         String        @unique() @db.VarChar(255)
+  status        RequestStatus @default(PENDING)
 
-  chatRoomId String
-  chatRoom   ChatRoom @relation("ChatRoomMessages", fields: [chatRoomId], references: [id], onDelete: Cascade)
+  @@index([status])
+  @@index([branchName])
+  @@index([batch])
+  @@map("cardrequests")
+}
 
-  @@index([chatRoomId, createdAt])
-  @@index([senderId, createdAt])
-  @@map("messages")
+model CardProfile {
+  id              String     @id @default(uuid())
+  cardName        String     @db.VarChar(255)
+  cardScheme      CardScheme
+  description     String?
+  branchBlacklist String?
+  binPrefix       String     @unique
+  expiration      Int
+  currency        Currency
+  createdAt       DateTime   @default(now())
+
+  fees Fee[]
+}
+
+model Fee {
+  id            String       @id @default(uuid())
+  name          String       @db.VarChar(255)
+  value         Float
+  currency      Currency
+  frequency     FeeFrequency
+  feeImpact     FeeImpact?
+  accountPad    AccountPad
+  account       String?
+  cardProfileId String
+  cardProfile   CardProfile  @relation(fields: [cardProfileId], references: [id], onDelete: Cascade)
+
+  @@index([cardProfileId])
 }
