@@ -82,8 +82,8 @@ model Fee {
   feeImpact     FeeImpact?
   accountPad    AccountPad
   account       String?
-  cardProfileId String
-  cardProfile   CardProfile  @relation(fields: [cardProfileId], references: [id], onDelete: Cascade)
+  cardProfileId String?
+  cardProfile   CardProfile? @relation(fields: [cardProfileId], references: [id], onDelete: Cascade)
 
   @@index([cardProfileId])
 }

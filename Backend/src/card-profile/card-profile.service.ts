@@ -10,9 +10,13 @@ export class CardProfileService {
 
   // Create a new fee
   async createFee(dto: CreateFeeDto): Promise<Fee> {
-    return this.prisma.fee.create({
-      data: dto,
-    });
+    try {
+      return this.prisma.fee.create({
+        data: dto,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   // Retrieve all fees
@@ -20,7 +24,7 @@ export class CardProfileService {
     return this.prisma.fee.findMany();
   }
 
-  // Create a new card profile and link selected fees
+  // Create a new card profile and link selected fees.
   async create(dto: CreateCardProfileDto): Promise<CardProfile> {
     return this.prisma.$transaction(async (tx) => {
       // Create the card profile
