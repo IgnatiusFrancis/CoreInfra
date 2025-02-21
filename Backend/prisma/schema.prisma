@@ -65,7 +65,7 @@ model CardProfile {
   cardScheme      CardScheme
   description     String?
   branchBlacklist String?
-  binPrefix       String     @unique
+  binPrefix       String
   expiration      Int
   currency        Currency
   createdAt       DateTime   @default(now())

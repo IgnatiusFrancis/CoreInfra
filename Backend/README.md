@@ -99,6 +99,8 @@ Swagger Localhost: Access the Swagger documentation at http://localhost:2025/doc
 
 Swagger Production: Link to Swagger Collection [API Documentation](https://coreinfra.onrender.com/documentation#)
 
+Backend Link: Link to Render Backend [Backend Live](https://coreinfra.onrender.com/api/v1)
+
 ## Testing
 
 The project includes comprehensive test coverage:
@@ -114,7 +116,7 @@ npm run test card-profile.controller.spec.ts
 
 # Chat Tests
 npm run test card-request.controller.spec.ts
-npm run test chat.controller.spec.ts
+npm run test card-request.service.spec.ts
 
 ```
 

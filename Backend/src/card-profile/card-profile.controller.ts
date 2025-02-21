@@ -1,9 +1,18 @@
-import { Controller, Post, Param, Body, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Param,
+  Body,
+  Get,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CardProfileService } from './card-profile.service';
 import { CreateFeeDto } from './dto/create-fee.dto';
 import { CardProfile, Fee } from '@prisma/client';
 import { CreateCardProfileDto } from './dto/create-card-profile.dto';
+import { UpdateCardProfileDto } from './dto/update-card-profile.dto';
 
 @ApiTags('Card Profiles')
 @Controller('card-profiles')
@@ -39,5 +48,30 @@ export class CardProfileController {
   @ApiResponse({ status: 200, description: 'List of card profiles' })
   getProfiles(): Promise<CardProfile[]> {
     return this.cardProfileService.getProfiles();
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a card profile' })
+  @ApiResponse({
+    status: 200,
+    description: 'Card profile deleted successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Card profile not found' })
+  delete(@Param('id') id: string): Promise<{ message: string }> {
+    return this.cardProfileService.delete(id);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Edit a card profile' })
+  @ApiResponse({
+    status: 200,
+    description: 'Card profile updated successfully',
+  })
+  @ApiResponse({ status: 404, description: 'Card profile not found' })
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateCardProfileDto,
+  ): Promise<CardProfile> {
+    return this.cardProfileService.update(id, dto);
   }
 }
