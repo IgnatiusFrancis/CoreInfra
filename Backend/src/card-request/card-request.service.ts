@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCardRequestDto } from './dto/create-card-request.dto';
-import { PrismaService } from 'src/utils';
+import { PrismaService } from '../utils/prisma';
 import { CardRequest, RequestStatus } from '@prisma/client';
 
 @Injectable()

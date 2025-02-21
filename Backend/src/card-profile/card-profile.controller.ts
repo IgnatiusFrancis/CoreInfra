@@ -33,4 +33,11 @@ export class CardProfileController {
   createCardProfile(@Body() dto: CreateCardProfileDto): Promise<any> {
     return this.cardProfileService.create(dto);
   }
+
+  @Get('card-profiles')
+  @ApiOperation({ summary: 'Get card profile)' })
+  @ApiResponse({ status: 200, description: 'List of card profiles' })
+  getProfiles(): Promise<CardProfile[]> {
+    return this.cardProfileService.getProfiles();
+  }
 }

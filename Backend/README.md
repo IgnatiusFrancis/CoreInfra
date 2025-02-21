@@ -108,18 +108,13 @@ The project includes comprehensive test coverage:
 Located within each module directory:
 
 ```bash
-# Auth Tests
-npm run test auth.service.spec.ts
-npm run test auth.controller.spec.ts
-
-# Order Tests
-npm run test order.service.spec.ts
-npm run test order.controller.spec.ts
+# Card Profile Tests
+npm run test card-profile.service.spec.ts
+npm run test card-profile.controller.spec.ts
 
 # Chat Tests
-npm run test chat.service.spec.ts
+npm run test card-request.controller.spec.ts
 npm run test chat.controller.spec.ts
-npm run test chat.gateway.spec.ts
 
 ```
 
@@ -147,13 +142,6 @@ Core Requirements Implemented
     . State transitions (Review → Processing → Completed)
     . Input validation
 
-3.  Chat System:
-    . Real-time WebSocket communication
-    . Automatic chat room creation per order
-    . Persistent message storage
-    . Admin-controlled room closure
-    . Chat history visibility etc
-
 ## Nice-to-Have Features (Planned)
 
 1.  Docker Integration:
@@ -162,17 +150,15 @@ Core Requirements Implemented
     . Scaling Solutions:
 
 2.  Redis implementation for caching
-    . Bull Queue for handling chat messages
     . Horizontal scaling capabilities
 
 ## Development Challenges
 
 1.  Time Management:
-    . Met tight deadlines during festive period
+    . Met tight deadlines
     . Balanced feature implementation with testing requirements
 
 2.  Technical Challenges:
-    . Implementing real-time WebSocket communication
     . Ensuring proper state management across the system
     . Maintaining test coverage while adding features
 
