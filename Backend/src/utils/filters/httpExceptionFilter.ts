@@ -21,23 +21,23 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     let status: number;
     let message: string;
-    let data: any;
+    //let data: any;
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       message = exception.message;
-      data = exception.getResponse();
+      //data = exception.getResponse();
     } else {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = 'Internal server error';
-      data = null;
+      // data = null;
     }
 
     if (isHttp) {
       response.status(status).json({
         status: 'error',
         message,
-        data,
+        //data,
         timestamp: new Date().toISOString(),
       });
     } else if (isWebSocket) {
@@ -45,7 +45,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       client.emit('exception', {
         status: 'error',
         message,
-        data,
+        // data,
         timestamp: new Date().toISOString(),
       });
     }

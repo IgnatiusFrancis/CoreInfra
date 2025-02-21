@@ -1,6 +1,6 @@
-<!-- # Order Management System
+# Card Management System
 
-A real-time order management system built with NestJS, featuring WebSocket-based chat functionality, role-based access control, and comprehensive test coverage.
+A backend system built with NestJS and Prisma, providing APIs for fee management, card profile creation, and card request processing
 
 # Overview
 
@@ -20,7 +20,6 @@ This project implements a robust order management system with real-time chat cap
 - [Testing](#testing)
   - [Unit Tests](#unit-tests)
   - [Integration Tests](#integration-tests)
-- [WebSocket Testing Guide](#webSocket-testing-guide)
 - [Technical Implementation](#technical-implementation)
 - [Nice-to-Have Features (Planned)](#nice-to-have-features-planned)
 - [Development Challenges](#development-challenges)
@@ -30,14 +29,13 @@ This project implements a robust order management system with real-time chat cap
 
 # Key-Features
 
-- Role-based user management (Admin and User)
-- Order creation and management with state transitions
-- Real-time chat system using WebSockets
-- Comprehensive test coverage (Unit and Integration tests)
-- API documentation (Swagger and Postman)
-- Input validation and error handling for both HttpException and WsException
-- Persistent chat history
-- Admin-controlled chat room closure with summary messages
+- Fee Management: Create and retrieve different fees.
+- Card Profile Management: Create card profiles and link them with fees.
+- Card Request Handling: Process card requests, check batch uniqueness, and update statuses.
+- Database Management: Uses PostgreSQL with Prisma ORM.
+- API documentation (Swagger)
+- Robust Error Handling: HTTP exceptions for invalid requests
+- Modular Architecture: Separation of concerns for fee, card profile, and request services
 
 # Prerequisites
 
@@ -52,17 +50,18 @@ This project implements a robust order management system with real-time chat cap
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/IgnatiusFrancis/Checkit.git
+   git clone https://github.com/IgnatiusFrancis/CoreInfra.git
 
    ```
 
 # Install dependencies:
 
-npm install
+- cd into Backend
+- npm install
 
 # Configuration
 
-Create a .env file in the root directory and configure the following environment variables:
+Create a .env file in the root backend directory and configure the following environment variables:
 
 ```env
 DATABASE_URL="postgres://user:password@host:port/dbname"
@@ -96,11 +95,9 @@ $ npm run start:prod
 
 ## API Documentation
 
-Swagger UI: Access the Swagger documentation at http://localhost:2025/documentation#/
+Swagger Localhost: Access the Swagger documentation at http://localhost:2025/documentation#/
 
-Postman Collection: Link to Postman Collection [API Documentation](https://www.postman.com/planetary-trinity-671710/checkit/documentation/ke2mwnl/checkit?workspaceId=d620d662-3204-4e2f-925a-f7ba8b7e80c7)
-
-Note: Postman is recommended for WebSocket testing due to better WebSocket support compared to Swagger
+Swagger Production: Link to Swagger Collection [API Documentation](https://coreinfra.onrender.com/documentation#)
 
 ## Testing
 
@@ -135,28 +132,6 @@ Located in the test folder with separate directories for each module:
 npm run test:e2e
 
 ```
-
-## WebSocket Testing Guide
-
-This system features a WebSocket-based chat functionality for real-time communication. Follow the steps below to connect and interact with the WebSocket server.
-
-Prerequisites
-Ensure the server is running and that you have a valid JWT token for authorization.
-
-Steps to Test WebSocket
-
-1.  Connect to the WebSocket Server through localhost:2025/api/v1/chat as documented in postman and provide Authorization: Bearer <your_jwt_token> in the header section.
-
-2.  Supported Events
-    The system listens for the following events:
-    . message: Used to handle real-time chat messages.
-    . error: Used to handle any WsException errors.
-
-3.  Sending a Chat Message
-    To send a message:
-    . Click on the "Messages" tab in Postman.
-    . Ensure that the payload format is set to JSON.
-    . In the Field input box, type sendMessage. This is the event name the server listens for.
 
 ## Technical Implementation
 
@@ -221,4 +196,4 @@ For any inquiries, please reach out to:
 
 ```
 
-``` -->
+```
