@@ -19,8 +19,6 @@ This project implements a robust order management system with real-time chat cap
   - [API Documentation](#api-documentation)
 - [Testing](#testing)
   - [Unit Tests](#unit-tests)
-  - [Integration Tests](#integration-tests)
-- [Technical Implementation](#technical-implementation)
 - [Nice-to-Have Features (Planned)](#nice-to-have-features-planned)
 - [Development Challenges](#development-challenges)
 - [Contributing](#contributing)
@@ -119,30 +117,6 @@ npm run test card-request.controller.spec.ts
 npm run test card-request.service.spec.ts
 
 ```
-
-## integration Tests
-
-Located in the test folder with separate directories for each module:
-
-```bash
-# This runs all the tests in test folder
-npm run test:e2e
-
-```
-
-## Technical Implementation
-
-Core Requirements Implemented
-
-1.  User Management:
-    . Admin and Regular user roles
-    . JWT-based authentication
-    . Role-based access control
-
-2.  Order Management:
-    . Order creation with metadata
-    . State transitions (Review → Processing → Completed)
-    . Input validation
 
 ## Nice-to-Have Features (Planned)
 
