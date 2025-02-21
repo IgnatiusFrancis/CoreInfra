@@ -14,6 +14,7 @@ describe('CardProfileService', () => {
         id: 'fee123',
         ...data.data,
       })),
+      findFirst: jest.fn().mockResolvedValue(null),
       findMany: jest.fn().mockResolvedValue([
         {
           id: 'fee1',
