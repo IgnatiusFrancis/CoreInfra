@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BellIcon,
   UserIcon,
@@ -9,10 +9,75 @@ import {
   ChevronDown,
   Plus,
 } from "lucide-react";
-
+import axios from "axios";
+const API_BASE_URL = "https://coreinfra.onrender.com/api/v1";
 const CreateProfile = () => {
   const [showAddFeeModal, setShowAddFeeModal] = useState(false);
   const [fees, setFees] = useState([]);
+  const [selectedFeeIds, setSelectedFeeIds] = useState([]);
+  const [profileData, setProfileData] = useState({
+    cardName: "",
+    binPrefix: "",
+    cardScheme: "Verve",
+    expiration: "",
+    description: "",
+    currency: "NGN",
+    branchBlacklist: "",
+    feeIds: [],
+  });
+  const [newFee, setNewFee] = useState({
+    name: "",
+    value: "",
+    currency: "USD",
+    frequency: "MONTHLY",
+    feeImpact: "PIN_REISSUE",
+    accountPad: "NONE",
+    account: "",
+  });
+
+  useEffect(() => {
+    fetchFees();
+  }, []);
+
+  const fetchFees = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/card-profiles/fees`);
+      setFees(response.data);
+    } catch (error) {
+      console.error("Error fetching fees:", error);
+    }
+  };
+
+  const handleAddFee = async () => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/card-profiles/fee`,
+        newFee
+      );
+      const createdFee = response.data;
+      setFees([...fees, createdFee]);
+      setSelectedFeeIds([...selectedFeeIds, createdFee.id]);
+      setProfileData((prev) => ({
+        ...prev,
+        feeIds: [...prev.feeIds, createdFee.id],
+      }));
+      setShowAddFeeModal(false);
+    } catch (error) {
+      console.error("Error adding fee:", error);
+    }
+  };
+
+  const handleCreateProfile = async () => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/card-profiles`,
+        profileData
+      );
+      console.log("Profile created:", response.data);
+    } catch (error) {
+      console.error("Error creating profile:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -31,20 +96,32 @@ const CreateProfile = () => {
               <label className="block text-sm text-gray-600 mb-1">
                 Card Name<span className="text-red-500">*</span>
               </label>
+
               <input
                 type="text"
                 placeholder="Enter card name"
                 className="w-full p-2 border rounded-md"
+                onChange={(e) =>
+                  setProfileData({ ...profileData, cardName: e.target.value })
+                }
               />
             </div>
             <div>
               <label className="block text-sm text-gray-600 mb-1">
                 Bin Prefix<span className="text-red-500">*</span>
               </label>
+              {/* <input
+                type="text"
+                placeholder="00000000"
+                className="w-full p-2 border rounded-md"
+              /> */}
               <input
                 type="text"
                 placeholder="00000000"
                 className="w-full p-2 border rounded-md"
+                onChange={(e) =>
+                  setProfileData({ ...profileData, binPrefix: e.target.value })
+                }
               />
             </div>
             <div>
@@ -161,7 +238,10 @@ const CreateProfile = () => {
             </div>
           </div>
 
-          <button className="w-full mt-8 px-4 py-2 bg-blue-600 text-white rounded-md">
+          <button
+            onClick={handleCreateProfile}
+            className="w-full mt-8 px-4 py-2 bg-blue-600 text-white rounded-md"
+          >
             Create Profile
           </button>
         </div>
@@ -286,7 +366,10 @@ const CreateProfile = () => {
                 />
               </div>
 
-              <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md mt-4">
+              <button
+                onClick={handleAddFee}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-md mt-4"
+              >
                 Add Fee
               </button>
             </div>

@@ -1,99 +1,3 @@
-// // src/components/CardRequestDetails.tsx
-// "use client";
-// import { useState } from "react";
-
-// export default function CardRequestPageDetails() {
-//   const [requests] = useState([
-//     {
-//       branch: "Corporate",
-//       initiator: "BankStaff",
-//       quantity: 10,
-//       batch: "48392455",
-//       dateRequested: "1/15/2024 1:27:43",
-//       status: "Ready",
-//     },
-//     // Add more sample data as needed
-//   ]);
-
-//   return (
-//     <div className="bg-white shadow rounded-lg overflow-hidden">
-//       <div className="p-4">
-//         <div className="mb-4">
-//           <input
-//             type="text"
-//             placeholder="Search by branch"
-//             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-//           />
-//         </div>
-//         <div className="overflow-x-auto">
-//           <table className="min-w-full divide-y divide-gray-200">
-//             <thead className="bg-gray-50">
-//               <tr>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Branch
-//                 </th>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Initiator
-//                 </th>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Quantity
-//                 </th>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Batch
-//                 </th>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Date Requested
-//                 </th>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Status
-//                 </th>
-//                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   Action
-//                 </th>
-//               </tr>
-//             </thead>
-//             <tbody className="bg-white divide-y divide-gray-200">
-//               {requests.map((request, index) => (
-//                 <tr key={index}>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                     {request.branch}
-//                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                     {request.initiator}
-//                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                     {request.quantity}
-//                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                     {request.batch}
-//                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-//                     {request.dateRequested}
-//                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap">
-//                     <span
-//                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-//                         request.status === "Ready"
-//                           ? "bg-green-100 text-green-800"
-//                           : "bg-yellow-100 text-yellow-800"
-//                       }`}
-//                     >
-//                       {request.status}
-//                     </span>
-//                   </td>
-//                   <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-900">
-//                     <button>View</button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -125,7 +29,7 @@ export default function CardRequestPageDetails() {
     fetchCardRequests();
   }, []);
 
-  const filteredRequests = requests.filter((request) =>
+  const filteredRequests = requests?.requests?.filter((request) =>
     request?.branchName?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
