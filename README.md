@@ -163,6 +163,17 @@ npm run test card-request.service.spec.ts
 
 ```
 
+## Development Challenges
+
+1.  Time Management:
+    . Met tight deadlines
+    . Balanced feature implementation with testing requirements
+
+2.  Technical Challenges:
+    . Ensuring proper state management across the system
+    . Maintaining test coverage while adding features
+    . Developing both frontend and backend
+
 ## Development Roadmap
 
 ### Planned Features
