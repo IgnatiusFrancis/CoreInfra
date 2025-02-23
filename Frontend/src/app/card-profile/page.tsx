@@ -1,4 +1,4 @@
-// src/app/card-profile/page.tsx
+
 import CardProfileComponent from '@/components/CardProfileComponent'
 
 export default function CardProfile() {

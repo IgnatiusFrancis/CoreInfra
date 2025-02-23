@@ -1,6 +1,6 @@
-// src/components/dashboard/Dashboard.jsx
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   LineChart,
   Line,
@@ -49,53 +49,11 @@ const StatCard = ({
   </div>
 );
 
-const RecentRequests = () => {
-  const requests = [
-    {
-      branch: "Corporate",
-      type: "Instant",
-      quantity: 10,
-      status: "B",
-      statusColor: "bg-purple-100 text-purple-600",
-    },
-    {
-      branch: "Corporate",
-      type: "Personalized",
-      quantity: 10,
-      status: "In Progress",
-      statusColor: "text-orange-500",
-    },
-    {
-      branch: "Corporate",
-      type: "Personalized",
-      quantity: 10,
-      status: "Acknowledged",
-      statusColor: "text-blue-500",
-    },
-    {
-      branch: "Corporate",
-      type: "Instant",
-      quantity: 10,
-      status: "Pending",
-      statusColor: "text-gray-500",
-    },
-  ];
-
+const RecentRequests = ({ recentRequests }) => {
   return (
     <div className="bg-white rounded-lg border p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-medium">Recent Card Requests</h3>
-        <button className="text-gray-400 hover:text-gray-600">
-          <svg
-            className="w-5 h-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
-          </svg>
-        </button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -104,28 +62,20 @@ const RecentRequests = () => {
               <th className="text-left py-2 font-normal">Branch</th>
               <th className="text-left py-2 font-normal">Card Type</th>
               <th className="text-left py-2 font-normal">Quantity</th>
-              <th className="text-left py-2 font-normal"></th>
+              <th className="text-left py-2 font-normal">Status</th>
               <th className="text-right py-2 font-normal">Action</th>
             </tr>
           </thead>
           <tbody>
-            {requests.map((request, index) => (
+            {recentRequests?.map((request, index) => (
               <tr key={index} className="text-sm border-t">
                 <td className="py-3">{request.branch}</td>
                 <td>{request.type}</td>
                 <td>{request.quantity}</td>
                 <td>
-                  {request.status === "B" ? (
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${request.statusColor}`}
-                    >
-                      B
-                    </div>
-                  ) : (
-                    <span className={request.statusColor}>
-                      {request.status}
-                    </span>
-                  )}
+                  <span className={`text-${request.statusColor}`}>
+                    {request.status}
+                  </span>
                 </td>
                 <td className="text-right">
                   <button className="text-blue-600 hover:text-blue-700">
@@ -134,6 +84,13 @@ const RecentRequests = () => {
                 </td>
               </tr>
             ))}
+            {recentRequests?.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center py-4 text-gray-500">
+                  No recent requests.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -142,6 +99,9 @@ const RecentRequests = () => {
 };
 
 const DashboardPage = () => {
+  const [recentRequests, setRecentRequests] = useState([]);
+  const [pendingCount, setPendingCount] = useState(0);
+
   const monthlyIssuanceData = [
     { name: "May", personalized: 45, instant: 10 },
     { name: "Jun", personalized: 65, instant: 25 },
@@ -166,6 +126,23 @@ const DashboardPage = () => {
     { name: "Blocked", value: 75, color: "#4f46e5" },
     { name: "Lost", value: 25, color: "#ef4444" },
   ];
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get(
+          "https://coreinfra.onrender.com/api/v1/card-requests?limit=5"
+        );
+        console.log("response.data:", response.data.requests);
+        setRecentRequests(response.data.requests);
+        setPendingCount(response.data.pendingCount);
+      } catch (error) {
+        console.error("Error fetching recent requests", error);
+      }
+    };
+
+    fetchRequests();
+  }, []);
 
   return (
     <div className="p-6 max-w-[1600px] mx-auto">
@@ -364,7 +341,11 @@ const DashboardPage = () => {
             </div>
           </div>
         </div>
+        <RecentRequests recentRequests={recentRequests} />
+      </div>
 
+      {/* Bottom Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg border">
           <h3 className="font-medium mb-6">This Week's Income</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -382,12 +363,6 @@ const DashboardPage = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-      </div>
-
-      {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RecentRequests />
-
         <div className="bg-white p-6 rounded-lg border">
           <h3 className="font-medium mb-6">Card Status Distribution</h3>
           <div className="flex justify-center">

@@ -1,4 +1,4 @@
-// src/app/card-request/page.tsx
+
 import CardRequestComponent from '@/components/CardRequestComponent'
 
 export default function CardRequest() {
