@@ -21,9 +21,21 @@ export class CardRequestService {
     return this.prisma.cardRequest.create({ data });
   }
 
-  async findAll(): Promise<CardRequest[]> {
+  async findAll(
+    limit?: number,
+  ): Promise<{ requests: CardRequest[]; pendingCount: number }> {
     try {
-      return this.prisma.cardRequest.findMany();
+      const [requests, pendingCount] = await this.prisma.$transaction([
+        this.prisma.cardRequest.findMany({
+          orderBy: { dateRequested: 'desc' },
+          take: limit || undefined,
+        }),
+        this.prisma.cardRequest.count({
+          where: { status: RequestStatus.PENDING },
+        }),
+      ]);
+
+      return { requests, pendingCount };
     } catch (error) {
       throw error;
     }

@@ -1,5 +1,15 @@
-import { Controller, Get, Post, Patch, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Body,
+  Param,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CardRequestService } from './card-request.service';
 import { CreateCardRequestDto } from './dto/create-card-request.dto';
 import { CardRequest } from '@prisma/client';
@@ -21,13 +31,17 @@ export class CardRequestController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all card requests' })
+  @ApiOperation({ summary: 'Get recent card requests and pending count' })
   @ApiResponse({
     status: 200,
-    description: 'Returns a list of all card requests',
+    description:
+      'Returns a list of recent card requests and total pending requests',
   })
-  findAll(): Promise<CardRequest[]> {
-    return this.cardRequestService.findAll();
+  @ApiQuery({ name: 'limit', required: false, example: 50 })
+  findAll(
+    @Query('limit') limit?: number,
+  ): Promise<{ requests: CardRequest[]; pendingCount: number }> {
+    return this.cardRequestService.findAll(limit ? Number(limit) : 50);
   }
 
   @Get(':id')
