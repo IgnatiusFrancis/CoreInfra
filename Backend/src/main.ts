@@ -8,15 +8,9 @@ import { setupSwagger } from './utils';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // app.enableCors({
-  //   origin: ['http://localhost:3000', 'https://core-infra-psi.vercel.app/'],
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,PATCH',
-  //   allowedHeaders: 'Content-Type, Authorization, Origin, X-Requested-With',
-  //   credentials: true,
-  // });
 
   app.enableCors({
-    origin: true, // Allows all origins
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization, Origin, X-Requested-With',
     credentials: true,
