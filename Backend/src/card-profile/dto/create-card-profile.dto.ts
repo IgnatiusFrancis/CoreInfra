@@ -38,10 +38,13 @@ export class CreateCardProfileDto {
   @IsNotEmpty()
   binPrefix: string;
 
-  @ApiProperty({ example: 5, description: 'Card expiration period (years)' })
-  @IsInt()
+  @ApiProperty({
+    example: '40 Months',
+    description: 'Card expiration period (years)',
+  })
+  @IsString()
   @IsNotEmpty()
-  expiration: number;
+  expiration: string;
 
   @ApiProperty({ example: 'USD', description: 'Fee currency', enum: Currency })
   @IsEnum(Currency)

@@ -1,6 +1,6 @@
 # Card Management System
 
-A backend system built with NestJS and Prisma, providing APIs for fee management, card profile creation, and card request processing
+A backend system built with Nodejs(NestJS) and Prisma, providing APIs for fee management, card profile creation, and card request processing
 
 # Overview
 
